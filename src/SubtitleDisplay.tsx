@@ -1,5 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+// Keyframe for zooming and italicizing each character independently
+const zoomItalicCharacterAnimation = keyframes`
+  0% { 
+    transform: scale(1) rotate(0deg); /* Initial state (normal) */
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(1.3) rotate(10deg); /* Zoom and tilt (italicize) */
+    opacity: 1;
+  }
+  100% { 
+    transform: scale(1) rotate(0deg); /* Return to normal state */
+    opacity: 1;
+  }
+`;
 
 const SubtitleContainer = styled.div`
   width: 100%;
@@ -12,13 +28,24 @@ const SubtitleContainer = styled.div`
   align-items: center;
   justify-content: center;
   font-family: 'Hergon Grotesk Extra Light', sans-serif;
+  overflow: hidden;
+  perspective: 400px;
+  white-space: nowrap; /* Keep text in one line */
 `;
 
 const SubtitleText = styled.div<{ isAnimating: boolean }>`
   font-size: 24px;
   text-align: center;
-  transition: transform 0.3s ease;
-  transform: ${props => props.isAnimating ? 'scale(1.1)' : 'scale(1)'};
+  display: inline-flex;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  
+  /* Apply animation to each character independently */
+  span {
+    display: inline-block;
+    animation: ${props => props.isAnimating ? zoomItalicCharacterAnimation : 'none'} 0.8s ease-in-out forwards;
+    opacity: 1; /* Ensure no fading happens */
+  }
 `;
 
 const SubtitleDisplay: React.FC<{ currentSubtitle: string }> = ({ currentSubtitle }) => {
@@ -40,17 +67,28 @@ const SubtitleDisplay: React.FC<{ currentSubtitle: string }> = ({ currentSubtitl
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
 
-    // Cleanup event listeners
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
 
+  // Split the currentSubtitle into words, then into individual characters for animation
+  const words = currentSubtitle.split(' ');
+
   return (
     <SubtitleContainer>
       <SubtitleText isAnimating={isAnimating}>
-        {currentSubtitle || "No Subtitle"}
+        {words.map((word, wordIndex) => (
+          <>
+            {/* For each word, split it into individual characters and animate them */}
+            {word.split('').map((char, charIndex) => (
+              <span key={`${wordIndex}-${charIndex}`}>{char}</span>
+            ))}
+            {/* Add space between words */}
+            {wordIndex < words.length - 1 && <span>&nbsp;</span>}
+          </>
+        ))}
       </SubtitleText>
     </SubtitleContainer>
   );

@@ -5,7 +5,7 @@ import subtitlesData from "./output_from_ourAPI.json";
 // Styled Components
 const Container = styled.div`
   width: 100%;
-  height: 200px;
+  height: 83%;
   background-color: #000;
   color: white;
   border-radius: 8px;
