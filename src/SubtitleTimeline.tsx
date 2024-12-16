@@ -47,10 +47,10 @@ const TimeSegment = styled.div<{ isActive: boolean; hasSubtitle: boolean }>`
   flex: 0 0 40px; /* Fixed width for each segment */
   flex-shrink: 0; /* Prevent the segment from shrinking */
   height: 60px;
-  background: linear-gradient(to top, #7757e0, #a485f0);
+  background: linear-gradient(to top,rgb(194, 174, 245), #7757e0);
   opacity: ${props => (props.isActive ? 1 : 0.7)};
   border: 1px solid ${props => (props.hasSubtitle ? "#444" : "#222")};
-  border-radius: 8px;
+  border-radius: ;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -149,7 +149,6 @@ useEffect(() => {
             hasSubtitle={hasSubtitleAtTime(time)}
             onClick={() => handleSegmentClick(time)}
           >
-            {time}s
           </TimeSegment>
         ))}
       </TimelineWrapper>
