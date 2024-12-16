@@ -118,7 +118,6 @@ useEffect(() => {
     });
   };
 
-  const progress = (currentTime / totalSeconds) * 100;
 
   // Scroll to clicked segment and center it
   const handleSegmentClick = (time: number) => {
