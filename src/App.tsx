@@ -1,7 +1,8 @@
 
 import './App.css'
 import Display from './Display'
-import LeftBar from './leftbar'
+import LeftBar from './LeftBar'
+
 
 const App = () => {
   return (
