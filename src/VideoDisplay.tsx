@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { Replay5 } from '@mui/icons-material';
 import { Forward5 } from '@mui/icons-material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Button from '@mui/material/Button';
 
 const VideoContainer = styled.div`
   height: 100%;
@@ -33,7 +35,7 @@ const ControlsContainer = styled.div`
   justify-content: center;
   gap: 20px;
   width: 100%;
-  padding:5px
+  padding: 5px;
 `;
 
 const ControlButton = styled.button`
@@ -42,9 +44,30 @@ const ControlButton = styled.button`
   color: white;
   font-size: 36px;
   cursor: pointer;
-  
+
   &:hover {
     color: #ccc;
+  }
+`;
+
+const ExportButton = styled(Button)`
+  && {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 50px;
+    padding: 2px 10px;
+    background: black;
+    border: 1px solid white;
+    color: white;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    &:hover {
+      background: #222;
+    }
   }
 `;
 
@@ -52,6 +75,9 @@ const VideoDisplay: React.FC = () => {
   return (
     <VideoContainer>
       <GradientBox />
+      <ExportButton>
+        Export <ArrowForwardIcon />
+      </ExportButton>
       <ControlsContainer>
         <ControlButton>
           <Replay5 />

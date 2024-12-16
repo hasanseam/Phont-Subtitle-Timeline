@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import subtitlesData from "./output_from_ourAPI.json";
 
-// Styled Components
 const Container = styled.div`
   width: 100%;
   height: 83%;
@@ -14,18 +13,17 @@ const Container = styled.div`
   flex-direction: column;
   gap: 16px;
   position: relative;
-  overflow: hidden; /* Prevent overflow outside the container */
+  overflow: hidden;
 `;
 
 const TimelineWrapper = styled.div`
-  display: flex;
-  width: 50%;
-  min-width: 100%;
-  overflow-x: auto; /* Allow horizontal scroll */
-  gap:0px;
-  scroll-behavior: smooth;
   position: relative;
-  flex-shrink: 0; /* Prevent shrinking of the timeline wrapper */
+  display: flex;
+  min-width: 100%;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 10px;
+  margin-top: 40px;
 
   &::-webkit-scrollbar {
     height: 6px;
@@ -43,14 +41,19 @@ const TimelineWrapper = styled.div`
 `;
 
 
+const TimeSegmentWrapper = styled.div`
+  display: flex;
+  gap: 0px;
+  position: relative;
+`;
+
 const TimeSegment = styled.div<{ isActive: boolean; hasSubtitle: boolean }>`
-  flex: 0 0 40px; /* Fixed width for each segment */
-  flex-shrink: 0; /* Prevent the segment from shrinking */
+  flex: 0 0 40px;
+  flex-shrink: 0;
   height: 60px;
-  background: linear-gradient(to top,rgb(194, 174, 245), #7757e0);
-  opacity: ${props => (props.isActive ? 1 : 0.7)};
-  border: 1px solid ${props => (props.hasSubtitle ? "#444" : "#222")};
-  border-radius: ;
+  background: linear-gradient(to top, rgb(194, 174, 245), #7757e0);
+  opacity: ${({ isActive }) => (isActive ? 1 : 0.7)};
+  border: 1px solid ${({ hasSubtitle }) => (hasSubtitle ? "#444" : "#222")};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -87,18 +90,23 @@ interface SubtitleTimelineProps {
 const SubtitleTimeline: React.FC<SubtitleTimelineProps> = ({ onSubtitleChange }) => {
   const [currentTime, setCurrentTime] = useState<number>(0);
   const timelineRef = useRef<HTMLDivElement | null>(null);
-  const totalSeconds = 40; // Total duration (adjust as needed)
 
-  // Update subtitle when currentTime changes
-// Update the useEffect for consistent subtitle display
-useEffect(() => {
+  const calculateTotalDuration = () => {
+    if (subtitlesData.length === 0) return 0;
+    const lastSubtitle = subtitlesData[subtitlesData.length - 1];
+    return lastSubtitle.end_time + 5;
+  };
+
+  const totalSeconds = Math.ceil(calculateTotalDuration());
+
+  useEffect(() => {
     const activeSubtitle = subtitlesData.find(subtitle => {
       const timeMs = currentTime * 1000;
       const startMs = Math.floor(subtitle.start_time * 1000);
       const endMs = Math.ceil(subtitle.end_time * 1000);
       return timeMs >= startMs && timeMs <= endMs;
     });
-  
+
     if (activeSubtitle) {
       onSubtitleChange(activeSubtitle.subtitle);
     } else {
@@ -108,18 +116,13 @@ useEffect(() => {
 
   const hasSubtitleAtTime = (time: number) => {
     return subtitlesData.some(subtitle => {
-      // Convert all times to milliseconds for precise comparison
       const timeMs = time * 1000;
       const startMs = Math.floor(subtitle.start_time * 1000);
       const endMs = Math.ceil(subtitle.end_time * 1000);
-      
-      // Check if the current time falls within any subtitle's range
       return timeMs >= startMs && timeMs <= endMs;
     });
   };
 
-
-  // Scroll to clicked segment and center it
   const handleSegmentClick = (time: number) => {
     setCurrentTime(time);
 
@@ -141,16 +144,18 @@ useEffect(() => {
   return (
     <Container>
       <TimelineWrapper ref={timelineRef}>
-        {Array.from({ length: totalSeconds }).map((_, time) => (
-          <TimeSegment
-            key={time}
-            className={`time-segment-${time}`}
-            isActive={currentTime === time}
-            hasSubtitle={hasSubtitleAtTime(time)}
-            onClick={() => handleSegmentClick(time)}
-          >
-          </TimeSegment>
-        ))}
+        <TimeSegmentWrapper>
+          {Array.from({ length: totalSeconds }).map((_, time) => (
+            <TimeSegment
+              key={time}
+              className={`time-segment-${time}`}
+              isActive={currentTime === time}
+              hasSubtitle={hasSubtitleAtTime(time)}
+              onClick={() => handleSegmentClick(time)}
+            >
+            </TimeSegment>
+          ))}
+        </TimeSegmentWrapper>
       </TimelineWrapper>
       <ActiveIndicator />
       <TimeDisplay>Current Time: {currentTime}s</TimeDisplay>
