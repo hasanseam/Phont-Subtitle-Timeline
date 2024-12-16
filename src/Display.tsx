@@ -48,12 +48,10 @@ const TimelineSection = styled.div`
 
 const Display: React.FC = () => {
   const [currentSubtitle, setCurrentSubtitle] = useState<string>("");
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  
 
   const handleSubtitleChange = (subtitle: string) => {
     setCurrentSubtitle(subtitle);
-    setIsAnimating(true);
-    setTimeout(() => setIsAnimating(false), 1000);
   };
 
   return (
