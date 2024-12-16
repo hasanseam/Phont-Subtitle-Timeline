@@ -1,7 +1,7 @@
 
 import './App.css'
-import Leftbar from './leftbar'
 import Display from './Display'
+import LeftBar from './leftbar'
 
 const App = () => {
   return (
@@ -14,8 +14,8 @@ const App = () => {
       top: 0,
       left: 0
     }}>
-      <Leftbar/>
       <Display/>
+      <LeftBar></LeftBar>
     </div>
   )
 }

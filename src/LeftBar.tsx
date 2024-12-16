@@ -39,7 +39,7 @@ const LogoContainer = styled.div`
   }
 `;
 
-const Leftbar: React.FC = () => {
+const LeftBar: React.FC = () => {
   return (
     <LeftbarContainer>
       <LogoContainer>
@@ -49,4 +49,4 @@ const Leftbar: React.FC = () => {
   );
 };
 
-export default Leftbar;
+export default LeftBar;
