@@ -17,13 +17,14 @@ const Container = styled.div`
 `;
 
 const TimelineWrapper = styled.div`
-  position: relative;
   display: flex;
+  flex-direction: column; /* Ensure elements stack vertically */
+  width: 50%;
   min-width: 100%;
-  overflow-x: auto;
+  overflow-x: auto; 
   scroll-behavior: smooth;
-  gap: 10px;
-  margin-top: 40px;
+  position: relative;
+  flex-shrink: 0;
 
   &::-webkit-scrollbar {
     height: 6px;
@@ -40,20 +41,41 @@ const TimelineWrapper = styled.div`
   }
 `;
 
+const TopContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: 50px;
+  background: #000;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+`;
+
+const RoundedBox = styled.div`
+  padding: 8px 16px;
+  border: 2px solid white;
+  border-radius: 20px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Hergon Grotesk Extra Light', sans-serif;
+`;
 
 const TimeSegmentWrapper = styled.div`
   display: flex;
   gap: 0px;
-  position: relative;
 `;
 
 const TimeSegment = styled.div<{ isActive: boolean; hasSubtitle: boolean }>`
-  flex: 0 0 40px;
-  flex-shrink: 0;
+  flex: 0 0 40px; 
+  flex-shrink: 0; 
   height: 60px;
   background: linear-gradient(to top, rgb(194, 174, 245), #7757e0);
-  opacity: ${({ isActive }) => (isActive ? 1 : 0.7)};
-  border: 1px solid ${({ hasSubtitle }) => (hasSubtitle ? "#444" : "#222")};
+  opacity: ${props => (props.isActive ? 1 : 0.7)};
+  border: 1px solid ${props => (props.hasSubtitle ? "#444" : "#222")};
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -94,7 +116,7 @@ const SubtitleTimeline: React.FC<SubtitleTimelineProps> = ({ onSubtitleChange })
   const calculateTotalDuration = () => {
     if (subtitlesData.length === 0) return 0;
     const lastSubtitle = subtitlesData[subtitlesData.length - 1];
-    return lastSubtitle.end_time + 5;
+    return lastSubtitle.end_time + 5; // Add 5 seconds to the last subtitle's end_time
   };
 
   const totalSeconds = Math.ceil(calculateTotalDuration());
@@ -106,7 +128,7 @@ const SubtitleTimeline: React.FC<SubtitleTimelineProps> = ({ onSubtitleChange })
       const endMs = Math.ceil(subtitle.end_time * 1000);
       return timeMs >= startMs && timeMs <= endMs;
     });
-
+  
     if (activeSubtitle) {
       onSubtitleChange(activeSubtitle.subtitle);
     } else {
@@ -144,6 +166,17 @@ const SubtitleTimeline: React.FC<SubtitleTimelineProps> = ({ onSubtitleChange })
   return (
     <Container>
       <TimelineWrapper ref={timelineRef}>
+      <TopContainer>
+      <RoundedBox>
+         subtitle in rounded box will be here
+         </RoundedBox>
+         <RoundedBox>
+         subtitle in rounded box will be here
+         </RoundedBox>
+         <RoundedBox>
+         subtitle in rounded box will be here
+         </RoundedBox>
+       </TopContainer>
         <TimeSegmentWrapper>
           {Array.from({ length: totalSeconds }).map((_, time) => (
             <TimeSegment
