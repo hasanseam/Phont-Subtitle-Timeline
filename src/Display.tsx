@@ -14,8 +14,7 @@ const DisplayContainer = styled.div`
 
 const LeftColumn = styled.div`
   flex: 1;
-
-  padding: 20px;
+  padding: 20px 0px 20px 20px;
 `;
 
 const RightColumn = styled.div`

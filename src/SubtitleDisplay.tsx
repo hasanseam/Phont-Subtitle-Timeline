@@ -30,16 +30,20 @@ const SubtitleContainer = styled.div`
   font-family: 'Hergon Grotesk Extra Light', sans-serif;
   overflow: hidden;
   perspective: 400px;
-  white-space: nowrap; /* Keep text in one line */
+
+  /* Allow the text to wrap and ensure container adapts */
+  white-space: normal; /* Allow wrapping */
+  word-wrap: break-word; /* Ensure words break if needed */
+  text-align: center; /* Center the text */
 `;
 
 const SubtitleText = styled.div<{ isAnimating: boolean }>`
   font-size: 24px;
   text-align: center;
-  display: inline-flex;
+  display: inline-block;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  
+
   /* Apply animation to each character independently */
   span {
     display: inline-block;

@@ -22,7 +22,7 @@ const TimelineWrapper = styled.div`
   width: 50%;
   min-width: 100%;
   overflow-x: auto; /* Allow horizontal scroll */
-  gap: 4px;
+  gap:0px;
   scroll-behavior: smooth;
   position: relative;
   flex-shrink: 0; /* Prevent shrinking of the timeline wrapper */
@@ -42,18 +42,9 @@ const TimelineWrapper = styled.div`
   }
 `;
 
-const TimelineProgress = styled.div<{ progress: number }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 2px;
-  background-color: #fff;
-  width: ${props => props.progress}%;
-  transition: width 0.3s linear;
-`;
 
 const TimeSegment = styled.div<{ isActive: boolean; hasSubtitle: boolean }>`
-  flex: 0 0 80px; /* Fixed width for each segment */
+  flex: 0 0 40px; /* Fixed width for each segment */
   flex-shrink: 0; /* Prevent the segment from shrinking */
   height: 60px;
   background: linear-gradient(to top, #7757e0, #a485f0);
@@ -69,7 +60,7 @@ const TimeSegment = styled.div<{ isActive: boolean; hasSubtitle: boolean }>`
   transition: all 0.2s ease;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1);
   }
 `;
 
@@ -151,7 +142,6 @@ useEffect(() => {
   return (
     <Container>
       <TimelineWrapper ref={timelineRef}>
-        <TimelineProgress progress={progress} />
         {Array.from({ length: totalSeconds }).map((_, time) => (
           <TimeSegment
             key={time}
